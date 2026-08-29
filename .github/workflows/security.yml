@@ -3,12 +3,13 @@ on:
   pull_request:
   push:
     branches: [main, master]
-permissions:
-  contents: read
-  security-events: write
 jobs:
   scan:
     uses: k19x/ci_cd/.github/workflows/security-scan.yml@main
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
     with:
       fail_on: high
     secrets: inherit

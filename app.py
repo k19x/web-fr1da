@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify
 from flask_socketio import SocketIO, emit
 import subprocess
 import os
+import shlex
 import threading
 from uuid import uuid4
 
@@ -13,7 +14,7 @@ SCRIPT_PATH = os.path.join(os.environ['USERPROFILE'], 'Downloads', 'projeto-frid
 def executar_comando(comando, sid):
     try:
         process = subprocess.Popen(
-            comando, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
+            shlex.split(comando), shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
         )
         for linha in iter(process.stdout.readline, ''):
             if linha:
@@ -35,7 +36,7 @@ def append_log_to_socket(log_message, sid):
 def executar_comando_sync(comando):
     try:
         result = subprocess.run(
-            comando, shell=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+            shlex.split(comando), shell=False, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
         )
         return result.stdout, result.stderr
     except Exception as e:
@@ -335,15 +336,15 @@ def execute_script():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    socketio.run(app, host="0.0.0.0", debug=True, use_reloader=False)
+    socketio.run(app, host="0.0.0.0", debug=False, use_reloader=False)
 
 def executar_comando_sync(comando):
     try:
-        process = subprocess.Popen(comando, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        process = subprocess.Popen(shlex.split(comando), shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         stdout, stderr = process.communicate()
         return stdout, stderr
     except Exception as e:
         return '', str(e)
 
 if __name__ == '__main__':
-    socketio.run(app, host="0.0.0.0", debug=True)
+    socketio.run(app, host="0.0.0.0", debug=False)

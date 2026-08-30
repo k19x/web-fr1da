@@ -8,7 +8,7 @@ frida==16.3.3
 frida-tools==12.4.3
 h11==0.16.0
 itsdangerous==2.2.0
-Jinja2==3.1.4
+Jinja2==3.1.5
 MarkupSafe==2.1.5
 prompt_toolkit==3.0.47
 Pygments==2.18.0

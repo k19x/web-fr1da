@@ -16,5 +16,5 @@ python-engineio==4.9.1
 python-socketio==5.11.3
 simple-websocket==1.0.0
 wcwidth==0.2.13
-Werkzeug==3.0.3
+Werkzeug==3.0.6
 wsproto==1.2.0
